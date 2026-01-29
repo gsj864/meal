@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>오늘의 급식</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="header">
+    <h1 class="app-title">오늘의 급식</h1>
+    <button type="button" class="btn-school" id="btnSchool" aria-label="학교 변경">학교 변경</button>
+  </header>
+
+  <main class="main">
+    <!-- 학교 미선택 시 -->
+    <section class="section-welcome" id="sectionWelcome">
+      <p class="welcome-text">급식 식단을 보려면 학교를 선택해 주세요.</p>
+      <button type="button" class="btn-primary" id="btnSelectSchool">학교 선택하기</button>
+    </section>
+
+    <!-- 학교 선택 후 메인 영역 -->
+    <section class="section-meal" id="sectionMeal" hidden>
+      <div class="school-info" id="schoolInfo"></div>
+
+      <div class="date-nav">
+        <label for="datePicker" class="date-label">날짜 선택</label>
+        <input type="date" id="datePicker" class="date-picker" aria-label="급식 날짜 선택">
+        <div class="date-display" id="dateDisplay">
+          <time id="currentDate"></time>
+          <span class="weekday" id="weekday"></span>
+        </div>
+      </div>
+
+      <div class="view-tabs" role="tablist" aria-label="보기 방식">
+        <button type="button" class="view-tab active" data-view="day" role="tab" aria-selected="true">일간</button>
+        <button type="button" class="view-tab" data-view="week" role="tab" aria-selected="false">주간</button>
+        <button type="button" class="view-tab" data-view="month" role="tab" aria-selected="false">월간</button>
+      </div>
+
+      <div class="allergy-toggle">
+        <input type="checkbox" id="toggleAllergy" class="toggle-input" checked>
+        <label for="toggleAllergy" class="toggle-label">알레르기 정보 표시</label>
+      </div>
+
+      <!-- 일간 보기 -->
+      <div class="view-panel view-day" id="viewDay">
+      <div class="meal-cards" id="mealCards">
+        <article class="meal-card" data-meal="1">
+          <h2 class="meal-title">🍚 아침</h2>
+          <div class="meal-content" id="mealBreakfast"></div>
+        </article>
+        <article class="meal-card" data-meal="2">
+          <h2 class="meal-title">🍱 점심</h2>
+          <div class="meal-content" id="mealLunch"></div>
+        </article>
+        <article class="meal-card" data-meal="3">
+          <h2 class="meal-title">🍽 저녁</h2>
+          <div class="meal-content" id="mealDinner"></div>
+        </article>
+      </div>
+      </div>
+
+      <!-- 주간 보기 -->
+      <div class="view-panel view-week" id="viewWeek" hidden>
+        <div class="week-range" id="weekRange"></div>
+        <div class="week-days" id="weekDays"></div>
+      </div>
+
+      <!-- 월간 보기 -->
+      <div class="view-panel view-month" id="viewMonth" hidden>
+        <div class="month-range" id="monthRange"></div>
+        <div class="month-days" id="monthDays"></div>
+      </div>
+
+      <div class="error-msg" id="errorMsg" hidden></div>
+    </section>
+  </main>
+
+  <!-- 학교 선택 모달 -->
+  <dialog class="modal" id="modalSchool">
+    <div class="modal-inner">
+      <h2 class="modal-title">학교 선택</h2>
+      <form class="school-form" id="schoolForm">
+        <label class="field-label">시/도</label>
+        <select id="selectRegion" class="select" required>
+          <option value="">선택</option>
+        </select>
+        <label class="field-label">학교급</label>
+        <select id="selectLevel" class="select" required>
+          <option value="">선택</option>
+          <option value="02">초등학교</option>
+          <option value="03">중학교</option>
+          <option value="04">고등학교</option>
+        </select>
+        <label class="field-label">학교명</label>
+        <div class="school-search">
+          <input type="text" id="inputSchoolName" class="input" placeholder="학교명 입력" autocomplete="off">
+          <button type="button" class="btn-search" id="btnSearchSchool">검색</button>
+        </div>
+        <div class="school-list" id="schoolList"></div>
+      </form>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="btnCloseModal">취소</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- 알레르기 상세 팝오버 -->
+  <div class="allergy-popover" id="allergyPopover" hidden aria-label="알레르기 유발 식재료 상세">
+    <div class="allergy-popover-backdrop" id="allergyPopoverBackdrop" aria-hidden="true"></div>
+    <div class="allergy-popover-inner">
+      <h3 class="allergy-popover-title">알레르기 유발 식재료</h3>
+      <p class="allergy-popover-desc">해당 메뉴에 포함될 수 있는 알레르기 유발 식재료입니다.</p>
+      <ul class="allergy-popover-list" id="allergyPopoverList"></ul>
+      <button type="button" class="allergy-popover-close" id="allergyPopoverClose">닫기</button>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>급식 정보: 나이스교육정보개방포털 Open API</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
